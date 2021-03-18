@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: password-manager
+  labels:
+    app: password-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: password-manager
+  template:
+    metadata:
+      labels:
+        app: password-manager
+    spec:
+      containers:
+        - image: 
+          name: password-manager
+          resources:
+            limits:
+              cpu: 100m
+              memory: 300Mi
+            requests:
+              cpu: 50m
+              memory: 150Mi
+          command:
+          imagePullPolicy: "Always"
+      nodeSelector:
+        kubernetes.io/os: linux
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: password-manager
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: password-manager
